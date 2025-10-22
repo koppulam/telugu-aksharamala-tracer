@@ -41,7 +41,7 @@ const HomePage: React.FC<HomePageProps> = ({ onSelectMode }) => {
         <p className="text-xl sm:text-2xl font-bold text-purple-700 mt-2 animate-pulse">Learn • Trace • Play!</p>
       </header>
 
-      <main className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 max-w-4xl w-full relative z-10">
+      <main className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5 max-w-4xl w-full relative z-10">
         <GameTile
           title="Trace Letters"
           description="✨ Draw Telugu letters!"
