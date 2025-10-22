@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "vite.config.ts", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
+  ],
+  "routes": [
+    { "src": "/manifest.webmanifest", "headers": { "Cache-Control": "public, max-age=0, must-revalidate" } },
+    { "src": "/icons/(.*)", "headers": { "Cache-Control": "public, max-age=31536000, immutable" } },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
+  "env": {}
+}
+
