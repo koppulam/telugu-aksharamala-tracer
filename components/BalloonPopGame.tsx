@@ -40,7 +40,7 @@ const BalloonPopGame: React.FC<BalloonPopGameProps> = ({ onExit }) => {
       newBalloons.push({
         id: Date.now() + i + Math.random(),
         letter: target.letter,
-        x: Math.random() * 85 + 5, // Random horizontal position
+        x: Math.random() * 70 + 10, // Random horizontal position (10-80% to avoid edges)
         duration: 8 + Math.random() * 4, // 8-12 seconds to fly up
         delay: Math.random() * 3
       });
@@ -52,7 +52,7 @@ const BalloonPopGame: React.FC<BalloonPopGameProps> = ({ onExit }) => {
       newBalloons.push({
         id: Date.now() + i + Math.random(),
         letter: wrongLetter.letter,
-        x: Math.random() * 85 + 5,
+        x: Math.random() * 70 + 10, // Keep balloons away from edges
         duration: 8 + Math.random() * 4,
         delay: Math.random() * 3
       });
@@ -131,28 +131,33 @@ const BalloonPopGame: React.FC<BalloonPopGameProps> = ({ onExit }) => {
   if (isGameOver) {
     const isNewBest = score > bestScore;
     return (
-      <div className="min-h-[100svh] w-full flex flex-col items-center justify-center p-4 bg-gradient-to-b from-purple-50 to-indigo-50 relative">
-        <div className="bg-white rounded-3xl shadow-2xl border-4 border-indigo-300 p-8 max-w-md w-full text-center">
-          <h1 className="text-4xl font-extrabold text-indigo-600 mb-4">Time's Up!</h1>
-          <div className="text-6xl mb-4">🎈</div>
-          <div className="mb-6">
-            <p className="text-2xl text-slate-600 mb-2">Your Score</p>
-            <p className="text-5xl font-extrabold text-orange-500">{score}</p>
+      <div className="min-h-[100svh] w-full flex flex-col items-center justify-center p-4 bg-gradient-to-br from-purple-200 via-pink-200 to-indigo-200 relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 right-20 text-6xl opacity-20">🎈</div>
+          <div className="absolute bottom-40 left-10 text-7xl opacity-20">⭐</div>
+          <div className="absolute top-1/3 left-1/4 text-5xl opacity-20">🌟</div>
+        </div>
+        <div className="bg-white rounded-[40px] shadow-2xl border-8 border-indigo-400 p-10 max-w-md w-full text-center relative animate-bounce-once">
+          <h1 className="text-5xl font-black text-indigo-600 mb-4 animate-pulse">Time's Up!</h1>
+          <div className="text-8xl mb-6 animate-bounce">{isNewBest ? '🏆' : '🎈'}</div>
+          <div className="mb-8 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-3xl p-6 border-4 border-orange-300">
+            <p className="text-2xl font-bold text-orange-600 mb-2">Your Score</p>
+            <p className="text-7xl font-black text-orange-600">{score}</p>
           </div>
-          <div className="mb-6">
-            <p className="text-lg text-slate-600 mb-1">Best Score</p>
-            <p className="text-3xl font-bold text-indigo-600">{isNewBest ? score : bestScore} {isNewBest && '🏆'}</p>
+          <div className="mb-8 bg-gradient-to-br from-purple-100 to-pink-100 rounded-3xl p-4 border-4 border-purple-300">
+            <p className="text-xl font-bold text-purple-600 mb-1">Best Score</p>
+            <p className="text-5xl font-black text-purple-700">{isNewBest ? score : bestScore} {isNewBest && '👑'}</p>
           </div>
-          <div className="flex gap-3 justify-center">
+          <div className="flex gap-4 justify-center">
             <button
               onClick={handleRestart}
-              className="px-6 py-3 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:scale-105 transition-transform"
+              className="px-8 py-4 bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-2xl font-black text-xl shadow-xl hover:scale-110 transition-all border-4 border-white"
             >
               🔄 Play Again
             </button>
             <button
               onClick={onExit}
-              className="px-6 py-3 bg-gradient-to-br from-slate-400 to-slate-500 text-white rounded-xl font-bold shadow-lg hover:scale-105 transition-transform"
+              className="px-8 py-4 bg-gradient-to-br from-orange-500 to-pink-600 text-white rounded-2xl font-black text-xl shadow-xl hover:scale-110 transition-all border-4 border-white"
             >
               🏠 Home
             </button>
@@ -163,33 +168,41 @@ const BalloonPopGame: React.FC<BalloonPopGameProps> = ({ onExit }) => {
   }
 
   return (
-    <div className="min-h-[100svh] w-full flex flex-col items-center p-4 bg-gradient-to-b from-purple-50 to-indigo-50 relative overflow-hidden">
+    <div className="min-h-[100svh] w-full flex flex-col items-center p-4 bg-gradient-to-br from-purple-200 via-pink-100 to-indigo-200 relative overflow-hidden pt-24">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 text-5xl opacity-10 animate-pulse">🎈</div>
+        <div className="absolute bottom-40 right-20 text-6xl opacity-10 animate-pulse" style={{animationDelay: '1s'}}>🎪</div>
+      </div>
+
       <button
         onClick={onExit}
-        className="absolute top-4 left-4 px-4 py-2 bg-white rounded-xl shadow text-slate-700 font-bold hover:bg-slate-100 z-10"
+        className="absolute top-4 left-4 px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-br from-orange-500 to-pink-600 text-white rounded-2xl shadow-xl font-black hover:scale-110 transition-all border-4 border-white z-10 text-sm sm:text-base"
       >
         🏠 Home
       </button>
 
       <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
-        <div className="px-4 py-2 bg-white rounded-xl shadow text-slate-700 font-bold">
+        <div className="px-3 py-2 sm:px-5 sm:py-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl shadow-xl text-white font-black text-sm sm:text-lg border-4 border-white">
           ⏱️ {formatTime(timeLeft)}
         </div>
-        <div className="px-4 py-2 bg-white rounded-xl shadow text-slate-700 font-bold">
-          Score: {score}
+        <div className="px-3 py-2 sm:px-5 sm:py-3 bg-gradient-to-br from-pink-400 to-rose-500 rounded-2xl shadow-xl text-white font-black text-sm sm:text-lg border-4 border-white">
+          🌟 {score}
         </div>
-        <div className="px-3 py-1 bg-indigo-100 rounded-xl shadow text-indigo-700 text-sm font-semibold">
+        <div className="px-3 py-1 sm:px-4 sm:py-2 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-2xl shadow-lg text-white text-xs sm:text-sm font-bold border-3 border-white">
           Best: {bestScore}
         </div>
       </div>
 
-      <header className="mt-16 mb-8 z-10">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-indigo-600 drop-shadow">Balloon Pop</h1>
-        <div className="mt-4 bg-white rounded-2xl shadow-xl border-4 border-indigo-300 px-6 py-4">
-          <p className="text-lg text-slate-600">Find this letter:</p>
-          <div className="text-5xl font-extrabold text-indigo-600 mt-2">{targetLetter.letter}</div>
-          <p className="text-sm text-slate-500 mt-1">{targetLetter.name}</p>
+      <div className="absolute left-4 top-24 sm:top-32 z-10">
+        <div className="bg-white rounded-[20px] sm:rounded-[24px] shadow-2xl border-4 sm:border-6 border-indigo-400 px-4 py-3 sm:px-6 sm:py-4 relative overflow-hidden">
+          <div className="absolute -top-3 -right-3 w-16 h-16 bg-pink-300/30 rounded-full blur-xl"></div>
+          <p className="text-lg sm:text-xl font-black text-indigo-600 mb-2">👆 Touch</p>
+          <div className="text-5xl sm:text-6xl font-black text-indigo-700 animate-pulse">{targetLetter.letter}</div>
         </div>
+      </div>
+
+      <header className="mt-2 mb-6 z-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-indigo-700 drop-shadow-lg">🎈 Balloon Pop</h1>
       </header>
 
       <main className="relative w-full h-[65svh] max-w-4xl overflow-hidden">
@@ -197,7 +210,7 @@ const BalloonPopGame: React.FC<BalloonPopGameProps> = ({ onExit }) => {
           <button
             key={balloon.id}
             onClick={() => handleBalloonClick(balloon)}
-            className="absolute bottom-0 rounded-full bg-gradient-to-br from-pink-400 to-red-500 shadow-2xl border-2 border-white text-white font-extrabold text-3xl w-20 h-24 flex items-center justify-center hover:scale-110 transition-transform"
+            className="absolute bottom-0 rounded-full bg-gradient-to-br from-pink-400 via-rose-500 to-red-600 shadow-2xl border-4 border-white text-white font-black text-4xl w-24 h-28 flex items-center justify-center hover:scale-125 hover:rotate-12 transition-all"
             style={{
               left: `${balloon.x}%`,
               animation: `fly-up ${balloon.duration}s linear ${balloon.delay}s infinite`,
