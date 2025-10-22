@@ -17,6 +17,10 @@
         0%, 100% { transform: translateY(0); }
         40% { transform: translateY(-6px); }
       }
+      @keyframes fly-up {
+        0% { transform: translateY(0) translateX(0); opacity: 1; }
+        100% { transform: translateY(-110vh) translateX(0); opacity: 0.8; }
+      }
       .animate-bounce-once { animation: bounce-once 600ms ease-in-out 1; }
     </style>
   </head>
